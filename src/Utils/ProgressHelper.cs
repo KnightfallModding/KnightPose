@@ -25,8 +25,9 @@ public static class ProgressHelper
         // 1. 1 win
         // 2. 3 wins
         // 3. 8 wins
-        // 4. 15+ wins
-        // Last pose existing in the game is 4.
+        // 4. 15 wins
+        // 5. 25+ wins
+        // Last pose existing in the game is 5.
 
         return progress switch
         {
@@ -34,7 +35,8 @@ public static class ProgressHelper
             < 3 => 1,  // [1; 2]
             < 8 => 2,  // [3; 7]
             < 15 => 3, // [8; 14]
-            _ => 4     // [15; +]
+            < 25 => 4, // [15;24]
+            _ => 5     // [25; +]
         };
     }
 }
