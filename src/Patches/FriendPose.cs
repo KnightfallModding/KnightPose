@@ -1,6 +1,9 @@
-using Steamworks;
+using Il2Cpp;
+using Il2CppInterop;
+using Il2CppSteamworks;
+using Il2CppPhoton.Pun;
 using HarmonyLib;
-using Landfall.Poses;
+using Il2CppLandfall.Poses;
 
 namespace KnightPose;
 

@@ -1,28 +1,37 @@
-﻿using HarmonyLib;
-using BepInEx;
-using BepInEx.Logging;
-using BepInEx.Unity.IL2CPP;
+﻿using UnityEngine;
+using MelonLoader;
+using Il2CppInterop.Runtime.Injection;
+using KnightPose;
+
+[assembly: MelonInfo(typeof(Plugin), ModInfo.MOD_NAME, ModInfo.MOD_VERSION, ModInfo.MOD_AUTHOR, $"{ModInfo.MOD_LINK}/releases/latest/download/Release.zip")]
+[assembly: MelonGame("Landfall Games", "Knightfall")]
 
 namespace KnightPose;
 
-[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
-public class Plugin : BasePlugin
+internal class Plugin : MelonMod
 {
-    internal static new ManualLogSource Log;
-
-    public override void Load()
+    public override void OnInitializeMelon()
     {
-        Log = base.Log;
-        Log.LogInfo($"Plugin {MyPluginInfo.PLUGIN_NAME} loaded successfully!");
+        LoggerInstance.Msg($"Plugin {ModInfo.MOD_NAME} loaded successfully!");
 
-        var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
-        harmony.PatchAll();
-
+        RegisterComponents();
         AddComponents();
     }
 
     private void AddComponents()
     {
-        AddComponent<ProgressCanvas>();
+        GameObject progressCanvasGO = new("ProgressCanvas");
+        progressCanvasGO.AddComponent<ProgressCanvas>();
+
+        progressCanvasGO.hideFlags = HideFlags.HideAndDontSave;
+    }
+
+    /// <summary>
+    /// Register custom classes to Il2Cpp.
+    /// </summary>
+    private static void RegisterComponents()
+    {
+        if (!ClassInjector.IsTypeRegisteredInIl2Cpp(typeof(ProgressCanvas)))
+            ClassInjector.RegisterTypeInIl2Cpp(typeof(ProgressCanvas));
     }
 }

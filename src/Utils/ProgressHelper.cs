@@ -1,3 +1,5 @@
+using Il2Cpp;
+
 namespace KnightPose;
 
 public static class ProgressHelper

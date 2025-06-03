@@ -4,7 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>t1nquen.knightfall.knightpose</AssemblyName>
     <Product>KnightPose</Product>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
+    <Author>t1nquen</Author>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
@@ -19,15 +20,14 @@
 
   
   <PropertyGroup>
-    <!-- TO-CHANGE: Path to the Steam folder containing the Knightfall dev EXE game -->
-    <DevExe>$(UserProfile)\Documents\PC_FIXE\hacking\Knightfall\Steam\$(Product)\$(Product).exe</DevExe>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PluginRuntimePath>$(DevExe)\..\BepInEx\plugins\$(Product)</PluginRuntimePath>
+    <!-- Path to the Steam folder containing the Knightfall EXE game -->
+    <DevExe>$(UserProfile)\Documents\PC_FIXE\hacking\Knightfall\Steam\$(Product)\Knightfall.exe</DevExe>
+    <PluginRuntimePath>$(DevExe)\..\Mods\</PluginRuntimePath>
+    <ModLink>https://github.com/KnightfallModding/KnightPose</ModLink>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+    <PackageReference Include="LavaGang.MelonLoader" Version="0.7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,14 +37,8 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>src\Libs\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx.Core">
-      <HintPath>src\Libs\BepInEx.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx.Unity.IL2CPP">
-      <HintPath>src\Libs\BepInEx.Unity.IL2CPP.dll</HintPath>
-    </Reference>
     <Reference Include="com.rlabrecque.steamworks.net">
-      <HintPath>src\Libs\com.rlabrecque.steamworks.net.dll</HintPath>
+      <HintPath>src\Libs\Il2Cppcom.rlabrecque.steamworks.net.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppInterop.Runtime">
       <HintPath>src\Libs\Il2CppInterop.Runtime.dll</HintPath>
@@ -52,8 +46,8 @@
     <Reference Include="Il2Cppmscorlib">
       <HintPath>src\Libs\Il2Cppmscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="PhotonUnityNetworking">
-      <HintPath>src\Libs\PhotonUnityNetworking.dll</HintPath>
+    <Reference Include="Il2CppPhotonUnityNetworking">
+      <HintPath>src\Libs\Il2CppPhotonUnityNetworking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>src\Libs\UnityEngine.dll</HintPath>
@@ -70,6 +64,11 @@
     <Exec Command="taskkill /f /fi &quot;imagename eq $(Product).exe&quot;" />
   </Target>
 
+  <Target Name="BuildCustomFiles" BeforeTargets="Build">
+    <!-- Mimic BepInEx.PluginInfoProps -->
+    <WriteLinesToFile Overwrite="true" File="ModInfo.cs" Lines="namespace $(Product)%3B&#xD;&#xA;&#xD;&#xA;public static class ModInfo&#xD;&#xA;{&#xD;&#xA;  public const string MOD_NAME = &quot;$(Product)&quot;%3B&#xD;&#xA;  public const string MOD_GUID = &quot;$(AssemblyName)&quot;%3B&#xD;&#xA;  public const string MOD_VERSION = &quot;$(Version)&quot;%3B&#xD;&#xA;  public const string MOD_AUTHOR = &quot;$(Author)&quot;%3B&#xD;&#xA;  public const string MOD_LINK = &quot;$(ModLink)&quot;%3B&#xD;&#xA;}&#xD;&#xA;" />
+  </Target>
+  
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">   
     <!-- Copy DLL and run modded game -->
     <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(PluginRuntimePath)\&quot;" />

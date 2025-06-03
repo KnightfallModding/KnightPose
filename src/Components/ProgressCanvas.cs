@@ -1,3 +1,4 @@
+using Il2Cpp;
 using UnityEngine;
 
 namespace KnightPose;
@@ -24,9 +25,11 @@ public class ProgressCanvas : MonoBehaviour
         int wins = FriendProgressHandler.Instance.FriendProgressDic[steamID].Progress;
 
         // Set position to the bottom-right of the screen
-        GUIStyle style = new GUIStyle();
+        GUIStyle style = new();
         style.fontSize = 20;
+        style.richText = false;
         style.normal.textColor = Color.white;
+
 
         float rightPadding = 20f;
         float bottomPadding = 25f;
