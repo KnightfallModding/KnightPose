@@ -1,4 +1,4 @@
-# KnightPose v1.0.0
+# KnightPose
 
 🧑‍🤝‍🧑 Unlock **different lobby poses** to show off the special loving bound developed with your teammate! 
 

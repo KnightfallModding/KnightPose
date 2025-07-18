@@ -49,9 +49,6 @@ public static class FriendPose
         Poseable poseable1 = __instance.localArmorKnight.GetComponent<Poseable>();
         Poseable poseable2 = __instance.m_FriendJoinedObject.GetComponent<Poseable>();
 
-        // Crashes immediately without logging error.
-        // Probably missing parts of the function due to Il2Cpp.
-        // int poseTier = __instance.GetPoseTier((int)progress);
         ulong friendSteamID = PhotonServerConnector.m_KnightFriend.SteamID;
         byte progress = FriendProgressHandler.Instance.GetFriendProgress(friendSteamID).Progress;
 
